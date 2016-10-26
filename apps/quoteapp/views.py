@@ -10,7 +10,7 @@ def login(request):
     result = User.objects.validateLogin(request)
     if result[0] == False:
         print_messages(request, result[1])
-        return redirect('/main')
+        return redirect('/')
     return log_user_in(request, result[1])
 
 def register(request):
