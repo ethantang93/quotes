@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <style media="screen">
+    #header{
+      height: 80px;
+      width: 1000px;
+      margin: 0px auto;
+      display: inline-block;;
+      background-color: lightgrey;
+
+    }
+    #header h1{
+      display: inline;
+    }
+  </style>
+  <body>
+    <div id="header">
+      <h1>Welcome {{request.session.user.alias}}!</h1>
+      <a href="/logout">LOGOUT</a>
+    </div>
+    <div id="quotable">
+      <h1>QUOTABLE</h1>
+      {%for quote in quotables%}
+      <p>{{quote.quoted_by}} : {{quote.message}}</p>
+      <p>Posted By: <a href="/users/{{quote.created_by.id}}">{{quote.created_by.alias}}</a></p>
+      <form class="" action="/add/{{quote.id}}/{{request.session.user.id}}" method="post">
+        {% csrf_token %}
+        <input type="submit" name="name" value="ADD to favorites">
+      </form>
+      {% endfor %}
+    </div>
+    <div id="favorites">
+      <h1>FAVORITES</h1>
+      {%for quote in favorites%}
+      <p>{{quote.quoted_by}} : {{quote.message}}</p>
+      <p>Posted By: <a href="/users/{{quote.created_by.id}}">{{quote.created_by.alias}}</a></p>
+      <form class="" action="/remove/{{quote.id}}/{{request.session.user.id}}" method="post">
+        {% csrf_token %}
+        <input type="submit" name="name" value="REMOVE from favorites">
+      </form>
+      {% endfor %}
+
+    </div>
+
+
+    <div id="addquote">
+      {% if messages %}
+      <ul class="messages">
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+      </ul>
+      {% endif %}
+        <form class="" action="/addquote" method="post">
+          {% csrf_token %}
+          Quoted By : <input type="text" name="quoted_by" value=""><br>
+          Message : <input type="text" name="message" value=""><br>
+          <input type="submit" name="Submit" value="Submit">
+        </form>
+    </div>
+
+  </body>
+</html>
