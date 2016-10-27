@@ -16,6 +16,16 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.contrib import admin
 
+from apps.quoteapp.models import User,Quote
+
+class UserAdmin(admin.ModelAdmin):
+  pass
+admin.site.register(User, UserAdmin)
+class quoteAdmin(admin.ModelAdmin):
+  pass
+admin.site.register(Quote, quoteAdmin)
+
 urlpatterns = [
+    url(r'^admin/',admin.site.urls),
     url(r'^', include('apps.quoteapp.urls')),
 ]

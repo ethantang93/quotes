@@ -14,6 +14,7 @@ def login(request):
     return log_user_in(request, result[1])
 
 def register(request):
+    print request.POST['fullname']
     result = User.objects.validateReg(request)
     if result[0] == False:
         print_messages(request, result[1])

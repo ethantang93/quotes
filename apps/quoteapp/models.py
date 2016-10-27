@@ -15,7 +15,7 @@ class UserManager(models.Manager):
 
         pw_hash = bcrypt.hashpw(request.POST['password'].encode(), bcrypt.gensalt())
 
-        user = self.create(name=request.POST['name'], alias=request.POST['alias'], email=request.POST['email'], pw_hash=pw_hash, birthdate= request.POST['birthdate'])
+        user = self.create(name=request.POST['fullname'], alias=request.POST['alias'], email=request.POST['email'], pw_hash=pw_hash, birthdate= request.POST['birthdate'])
 
         return (True, user)
 
@@ -34,7 +34,7 @@ class UserManager(models.Manager):
 
     def validate_inputs(self, request):
         errors = []
-        if len(request.POST['name']) < 2 or len(request.POST['alias']) < 2:
+        if len(request.POST['fullname']) < 2 or len(request.POST['alias']) < 2:
             errors.append("Please include a name or alias longer than two characters.")
         if not EMAIL_REGEX.match(request.POST['email']):
             errors.append("Please include a valid email.")
@@ -78,7 +78,7 @@ class QuoteManager(models.Manager):
         self.get(id=quote_id).liked_by.add(User.objects.get(id=user_id))
     def removeFavorite(self, quote_id, user_id):
         self.get(id=quote_id).liked_by.remove(User.objects.get(id=user_id))
-        
+
 
 
 
